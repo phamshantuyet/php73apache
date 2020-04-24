@@ -32,5 +32,6 @@ WORKDIR /var/www/html/
 
 EXPOSE 80
 
-ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
+# ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
+CMD ["/bin/sh", "-c", "/sbin/runit-wrapper"]
 
