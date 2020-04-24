@@ -22,6 +22,15 @@ RUN cp /usr/lib/php/7.3/modules/pdo_mysql.so /usr/local/lib/php/extensions/no-de
 COPY docker/000-default-website.conf /etc/apache2/conf.d/000-default.conf
 COPY docker/php.ini /etc/php/7.3/php.ini
 
+RUN apk add --update supervisor && rm  -rf /tmp/* /var/cache/apk/*
+
+RUN apk add --update --no-cache autoconf g++ make
+RUN pecl install redis
+RUN docker-php-ext-enable redis
+
+WORKDIR /var/www/html/
+
 EXPOSE 80
 
-CMD ["/bin/sh", "-c", "/sbin/runit-wrapper"]
+ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
+
